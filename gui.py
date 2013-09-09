@@ -13,7 +13,8 @@ class CellRendererTextWindow(Gtk.Window):
         self.set_default_size(200, 200)
 
         self.liststore = Gtk.ListStore(object, str, float)
-        self.liststore.append(["Fedora", "http://fedoraproject.org/", -5.22])
+        for row in rows:
+            self.liststore.append(row)
 
         treeview = Gtk.TreeView(model=self.liststore)
 
