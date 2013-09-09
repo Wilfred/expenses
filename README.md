@@ -27,8 +27,12 @@ the following contents:
 
 You can then run the script with:
 
-    $ python print_expenses.py /path/to/your.csv
+    $ python2 print_expenses.py /path/to/your.csv
 
 A CSV file should take the following format:
 
     2012-12-31,SAINSBURYS,-10.00
+
+To start the GUI, simply:
+
+    $ python2 gui.py /path/to/your.csv
