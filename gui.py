@@ -27,7 +27,7 @@ class CellRendererTextWindow(Gtk.Window):
         treeview.append_column(column_desc)
 
         renderer_amount = Gtk.CellRendererText()
-        column_amount = Gtk.TreeViewColumn("Amount", renderer_amount, text=0)
+        column_amount = Gtk.TreeViewColumn("Amount", renderer_amount, text=2)
         treeview.append_column(column_amount)
 
         self.add(treeview)
