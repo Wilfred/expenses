@@ -11,7 +11,10 @@ def parse_csv(path):
     
     with open(path, 'r') as f:
         for line in f.readlines():
-            raw_date, raw_description, raw_amount = line.strip().split(',')
+            line = line.strip()
+            
+            raw_date, desc_with_amount = line.split(",", 1)
+            raw_description, raw_amount = desc_with_amount.rsplit(",", 1)
 
             date = datetime.strptime(raw_date, "%Y-%m-%d").date()
             amount = float(raw_amount)
