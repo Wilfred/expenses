@@ -2,7 +2,7 @@
 
 import sys
 import json
-from datetime import datetime
+from datetime import datetime, date
 from collections import Counter
 
 
@@ -110,6 +110,22 @@ def print_uncategorised(rows):
         print "%s | %.2f\t| %s" % (date.strftime("%d %b"), amount, desc)
 
 
+def print_slush(rows):
+    today = date.today()
+
+    remaining_bills_total = 0
+
+    bills = json.load(open('bills.json'))['bills']
+    for bill in bills:
+        if bill['day'] >= today.day:
+            remaining_bills_total += bill['amount']
+
+    total = get_total(rows)
+
+    print "Remaining bills (approx): %.2f" % remaining_bills_total
+    print "Slush remaining (approx): %.2f" % (total - remaining_bills_total)
+
+
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         print "Usage: \n./print_expenses.py <csv_path> --summary\n./print_expenses.py <csv_path> --misc"
@@ -123,6 +139,8 @@ if __name__ == '__main__':
         print_summary(rows)
     elif "--misc" in sys.argv:
         print_uncategorised(rows)
+    elif "--slush" in sys.argv:
+        print_slush(rows)
     else:
         print "Need to pass --summary or --misc"
         sys.exit(1)
