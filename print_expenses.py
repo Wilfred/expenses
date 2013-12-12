@@ -95,22 +95,22 @@ if __name__ == '__main__':
         
     rows = parse_csv(file_name)
 
-    print "Uncategorised:"
+    print "-- UNCATEGORISED --"
     for date, desc, amount in get_uncategorised_counts(rows):
-        print "%s %s %.2f" % (date, desc, amount)
+        print "%s | %.2f\t| %s" % (date.strftime("%d %b"), amount, desc)
 
     category_counts = get_categorised_counts(rows)
 
-    print "\nSummary:"
+    print "\n-- SUMMARY --"
     for category, total in category_counts.iteritems():
         print "%s: %.2f" % (category, total)
 
     total = get_total(rows)
     categorised_total = sum(category_counts.values())
     uncategorised_total = total - categorised_total
-    print "\nCategorised total: %.2f" % categorised_total
-    print "Uncategorised total: %.2f" % uncategorised_total
+    print "\nCategorised total:\t%.2f" % categorised_total
+    print "Uncategorised total:\t%.2f" % uncategorised_total
 
-    print "Net total: %.2f" % total
     print "\nTotal income:\t%.2f" % get_total_income(rows)
     print "Total expenses:\t%.2f" % get_total_expenses(rows)
+    print "Net total:\t%.2f" % total
