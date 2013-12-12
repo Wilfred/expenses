@@ -40,6 +40,34 @@ def get_category(description):
     return None
 
 
+def get_categorised_counts(rows):
+    categories = Counter()
+
+    for date, desc, amount in rows:
+        category = get_category(desc)
+
+        if category:
+            categories[category] += amount
+
+    return categories
+
+
+def get_uncategorised_counts(rows):
+    for date, desc, amount in rows:
+        category = get_category(desc)
+
+        if not category:
+            yield (date, desc, amount)
+
+
+def get_total(rows):
+    total = 0
+    for date, desc, amount in rows:
+        total += amount
+
+    return total
+
+
 if __name__ == '__main__':
     if len(sys.argv) != 2:
         print "Usage: python print_expenses.py /path/to/csv"
@@ -49,24 +77,22 @@ if __name__ == '__main__':
         
     rows = parse_csv(file_name)
 
-    categories = Counter()
-
     print "Uncategorised:"
-    for date, desc, amount in rows:
-        category = get_category(desc)
+    for date, desc, amount in get_uncategorised_counts(rows):
+        print "%s %s %.2f" % (date, desc, amount)
 
-        if category:
-            categories[category] += amount
-        else:
-            print "%s %s %.2f" % (date, desc, amount)
+    category_counts = get_categorised_counts(rows)
 
     print "\nSummary:"
-    for category, total in categories.iteritems():
+    for category, total in category_counts.iteritems():
         print "%s: %.2f" % (category, total)
 
-    total = sum(amount for (date, desc, amount) in rows)
-    categorised_total = sum(categories.values())
+    total = get_total(rows)
+    categorised_total = sum(category_counts.values())
     uncategorised_total = total - categorised_total
     print "\nCategorised total: %.2f" % categorised_total
     print "Uncategorised total: %.2f" % uncategorised_total
-    print "Overall total: %.2f" % total
+
+    print "\nTotal income: %2.f"
+    print "Total expenses: %2.f"
+    print "Net total: %.2f" % total
