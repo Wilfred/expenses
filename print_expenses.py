@@ -68,6 +68,24 @@ def get_total(rows):
     return total
 
 
+def get_total_income(rows):
+    total = 0
+    for date, desc, amount in rows:
+        if amount > 0:
+            total += amount
+
+    return total
+
+
+def get_total_expenses(rows):
+    total = 0
+    for date, desc, amount in rows:
+        if amount < 0:
+            total += amount
+
+    return total
+
+
 if __name__ == '__main__':
     if len(sys.argv) != 2:
         print "Usage: python print_expenses.py /path/to/csv"
@@ -93,6 +111,6 @@ if __name__ == '__main__':
     print "\nCategorised total: %.2f" % categorised_total
     print "Uncategorised total: %.2f" % uncategorised_total
 
-    print "\nTotal income: %2.f"
-    print "Total expenses: %2.f"
     print "Net total: %.2f" % total
+    print "\nTotal income:\t%.2f" % get_total_income(rows)
+    print "Total expenses:\t%.2f" % get_total_expenses(rows)
