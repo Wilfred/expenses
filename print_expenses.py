@@ -86,22 +86,10 @@ def get_total_expenses(rows):
     return total
 
 
-if __name__ == '__main__':
-    if len(sys.argv) != 2:
-        print "Usage: python print_expenses.py /path/to/csv"
-        sys.exit(1)
-    else:
-        file_name = sys.argv[-1]
-        
-    rows = parse_csv(file_name)
-
-    print "-- UNCATEGORISED --"
-    for date, desc, amount in get_uncategorised_counts(rows):
-        print "%s | %.2f\t| %s" % (date.strftime("%d %b"), amount, desc)
-
+def print_summary(rows):
     category_counts = get_categorised_counts(rows)
 
-    print "\n-- SUMMARY --"
+    print "-- SUMMARY --"
     for category, total in category_counts.iteritems():
         print "%s: %.2f" % (category, total)
 
@@ -114,3 +102,27 @@ if __name__ == '__main__':
     print "\nTotal income:\t%.2f" % get_total_income(rows)
     print "Total expenses:\t%.2f" % get_total_expenses(rows)
     print "Net total:\t%.2f" % total
+
+
+def print_uncategorised(rows):
+    print "-- UNCATEGORISED --"
+    for date, desc, amount in get_uncategorised_counts(rows):
+        print "%s | %.2f\t| %s" % (date.strftime("%d %b"), amount, desc)
+
+
+if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        print "Usage: \n./print_expenses.py <csv_path> --summary\n./print_expenses.py <csv_path> --misc"
+        sys.exit(1)
+    else:
+        file_name = sys.argv[1]
+        
+    rows = parse_csv(file_name)
+
+    if "--summary" in sys.argv:
+        print_summary(rows)
+    elif "--misc" in sys.argv:
+        print_uncategorised(rows)
+    else:
+        print "Need to pass --summary or --misc"
+        sys.exit(1)
