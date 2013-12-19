@@ -123,6 +123,7 @@ def print_slush(rows):
     total = get_total(rows)
 
     print "Remaining bills (approx): %.2f" % remaining_bills_total
+    print "Remaining money: %.2f" % total
     print "Slush remaining (approx): %.2f" % (total - remaining_bills_total)
 
 
