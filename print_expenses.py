@@ -28,7 +28,12 @@ def parse_csv(path):
 def get_category(description):
     description = description.lower()
 
-    categories = json.load(open('categories.json'))
+    try:
+        categories = json.load(open('categories.json'))
+    except ValueError as e:
+        print "Could not parse categories.json: %s" % e
+        sys.exit(1)
+
     for category, keywords in categories.iteritems():
         for start_keyword in keywords.get('start', []):
             if description.startswith(start_keyword):
