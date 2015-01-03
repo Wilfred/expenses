@@ -2,7 +2,7 @@
 
 import sys
 import json
-from datetime import datetime, date
+import datetime as dt
 from collections import Counter
 
 
@@ -16,7 +16,7 @@ def parse_csv(path):
             raw_date, desc_with_amount = line.split(",", 1)
             raw_description, raw_amount = desc_with_amount.rsplit(",", 1)
 
-            date = datetime.strptime(raw_date, "%Y-%m-%d").date()
+            date = dt.datetime.strptime(raw_date, "%Y-%m-%d").date()
             amount = float(raw_amount)
 
             rows.append((date, raw_description, amount))
@@ -111,7 +111,7 @@ def print_uncategorised(rows):
 
 
 def print_slush(rows):
-    today = date.today()
+    today = dt.date.today()
 
     remaining_bills_total = 0
 
