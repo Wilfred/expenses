@@ -1,3 +1,13 @@
+# Raw data
 *.csv
-*.pyc
+*.pdf
+*.dat
+
+# Summary data
 *.json
+
+# Generated files
+*.pyc
+
+# ipython notebooks
+.ipynb_checkpoints
