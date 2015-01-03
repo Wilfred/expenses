@@ -101,17 +101,30 @@ def print_heading(text):
     print "-- {} ".format(text.upper()).ljust(get_terminal_width(), '-')
 
 
+def print_tuples(pairs):
+    """Pretty-print an iterable of (text, amount) tuples ordered by
+    amount.
+
+    """
+    pairs = list(pairs)
+
+    longest_text = max([text for (text, _) in pairs],
+                       key=len)
+    
+    def abs_amount(pair):
+        text, amount = pair
+        return abs(amount)
+
+    for text, amount in sorted(pairs, key=abs_amount):
+        print "{}: {:8.2f}".format(
+            text.rjust(len(longest_text)), amount)
+
+
 def print_summary(rows):
     category_counts = get_categorised_counts(rows)
 
     print_heading('by category')
-
-    longest_category = max(category_counts.keys(), key=len)
-    
-    for category, total in category_counts.iteritems():
-        space = "  " if total > 0 else " "
-        print "%s:%s%.2f" % (category.rjust(len(longest_category)),
-                             space, total)
+    print_tuples(category_counts.iteritems())
     print
 
     print_heading('category totals')
@@ -119,15 +132,18 @@ def print_summary(rows):
     total = get_total(rows)
     categorised_total = sum(category_counts.values())
     uncategorised_total = total - categorised_total
-    print "Categorised:\t%.2f" % categorised_total
-    print "Uncategorised:\t%.2f" % uncategorised_total
+    print_tuples([
+        ('Categorised', categorised_total),
+        ('Uncategorised', uncategorised_total)
+    ])
     print
 
     print_heading('overall totals')
-
-    print "Income:\t%.2f" % get_total_income(rows)
-    print "Expenses:\t%.2f" % get_total_expenses(rows)
-    print "Net:\t%.2f" % total
+    print_tuples([
+        ('Income', get_total_income(rows)),
+        ('Expenses', get_total_expenses(rows)),
+        ('Net', total)
+    ])
 
 
 def print_uncategorised(rows):
