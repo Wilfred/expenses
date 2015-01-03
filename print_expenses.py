@@ -148,9 +148,16 @@ def print_slush(rows):
     print "Slush remaining (approx): %.2f" % (total - remaining_bills_total)
 
 
+def print_usage():
+    print "Usage: "
+    print "./print_expenses.py <csv_path> --summary"
+    print "./print_expenses.py <csv_path> --misc"
+    print "./print_expenses.py <csv_path> --slush"
+
+
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        print "Usage: \n./print_expenses.py <csv_path> --summary\n./print_expenses.py <csv_path> --misc"
+        print_usage()
         sys.exit(1)
     else:
         file_name = sys.argv[1]
@@ -164,5 +171,5 @@ if __name__ == '__main__':
     elif "--slush" in sys.argv:
         print_slush(rows)
     else:
-        print "Need to pass --summary or --misc"
+        print_usage()
         sys.exit(1)
