@@ -126,9 +126,16 @@ def print_summary(rows):
 
 
 def print_uncategorised(rows):
+    def abs_amount(count_tuple):
+        date, desc, amount = count_tuple
+        return abs(amount)
+    
     print "-- UNCATEGORISED --"
-    for date, desc, amount in get_uncategorised_counts(rows):
-        print "%s | %.2f\t| %s" % (date.strftime("%d %b"), amount, desc)
+    for date, desc, amount in sorted(
+            get_uncategorised_counts(rows), key=abs_amount):
+        space = "  " if amount > 0 else " "
+        print "%s |%s%.2f\t| %s" % (date.strftime("%d %b %Y"),
+                                    space, amount, desc)
 
 
 def print_slush(rows):
