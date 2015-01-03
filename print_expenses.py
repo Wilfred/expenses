@@ -22,7 +22,7 @@ def parse_csv(path):
 
             rows.append((date, raw_description, amount))
 
-    return rows
+    return sorted(rows, key=lambda (date, desc, amount): date)
 
 
 def get_category(description):
