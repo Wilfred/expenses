@@ -192,6 +192,11 @@ if __name__ == '__main__':
         
     rows = parse_csv(file_name)
 
+    print "Dates from {} to {}.".format(
+        rows[-1][0],
+        rows[0][0]
+    )
+
     if "--summary" in sys.argv:
         print_summary(rows)
     elif "--misc" in sys.argv:
