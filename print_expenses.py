@@ -1,5 +1,6 @@
 #!/usr/bin/env python2
 
+import os
 import sys
 import json
 import datetime as dt
@@ -86,22 +87,42 @@ def get_total_expenses(rows):
     return total
 
 
+def get_terminal_width():
+    rows, columns = os.popen('stty size', 'r').read().split()
+    return int(columns)
+
+
+def print_heading(text):
+    print "-- {} ".format(text.upper()).ljust(get_terminal_width(), '-')
+
+
 def print_summary(rows):
     category_counts = get_categorised_counts(rows)
 
-    print "-- SUMMARY --"
-    for category, total in category_counts.iteritems():
-        print "%s: %.2f" % (category, total)
+    print_heading('by category')
 
+    longest_category = max(category_counts.keys(), key=len)
+    
+    for category, total in category_counts.iteritems():
+        space = "  " if total > 0 else " "
+        print "%s:%s%.2f" % (category.rjust(len(longest_category)),
+                             space, total)
+    print
+
+    print_heading('category totals')
+    
     total = get_total(rows)
     categorised_total = sum(category_counts.values())
     uncategorised_total = total - categorised_total
-    print "\nCategorised total:\t%.2f" % categorised_total
-    print "Uncategorised total:\t%.2f" % uncategorised_total
+    print "Categorised:\t%.2f" % categorised_total
+    print "Uncategorised:\t%.2f" % uncategorised_total
+    print
 
-    print "\nTotal income:\t%.2f" % get_total_income(rows)
-    print "Total expenses:\t%.2f" % get_total_expenses(rows)
-    print "Net total:\t%.2f" % total
+    print_heading('overall totals')
+
+    print "Income:\t%.2f" % get_total_income(rows)
+    print "Expenses:\t%.2f" % get_total_expenses(rows)
+    print "Net:\t%.2f" % total
 
 
 def print_uncategorised(rows):
